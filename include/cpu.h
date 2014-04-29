@@ -15,17 +15,20 @@ typedef struct reg{
   uint16_t pc;
   uint16_t sp;
 
-  uint16_t i;
+  uint16_t index;
   uint8_t v[16];  
 } reg_t;
 
 typedef struct cpu{
   uint8_t mem[MEMORY_SIZE];
-  uint8_t opcode;
+  uint16_t opcode;
   reg_t regs;
   uint8_t keypad;
 } cpu_t;
 
+
+cpu_t* init_cpu();
+void execute_cycle(cpu_t *cpu);
 
 
 #endif
