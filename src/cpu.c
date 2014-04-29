@@ -1,6 +1,7 @@
 #include <cpu.h>
 #include <instructions.h>
 
+
 static inline uint16_t fetch_dword(uint8_t *mem, uint8_t pc) {
   return mem[pc] << 8 | mem[pc + 1];
 }
@@ -11,6 +12,8 @@ cpu_t* init_cpu() {
   cpu->regs.sp = STACK_START;
   cpu->regs.pc = 0x200;
 
+  memcpy(cpu->mem, fontset, sizeof(fontset));
+    
   return cpu;
 }
 
@@ -23,9 +26,9 @@ void execute_cycle(cpu_t *cpu) {
   switch(cpu->opcode & 0xF000){
     case 0x0000:
       switch(cpu->opcode & 0x0FF){
-        case 0xE0:  break; /* CLS */
-        case 0xEE:  break; /* RTS */
-        default: fprintf(stderr, "Unknown opcode: %04X", cpu->opcode);
+        case 0xE0:  EXEC_INSTRUCTION(cls, cpu); break; /* CLS */
+        case 0xEE:  EXEC_INSTRUCTION(rts, cpu); break; /* RTS */
+        default: fprintf(stderr, "Unknown opcode: %04X\n", cpu->opcode);
       }
       break;
 
@@ -47,7 +50,7 @@ void execute_cycle(cpu_t *cpu) {
         case 0x0006: break;
         case 0x0007: break;
         case 0x0008: break;
-        default: fprintf(stderr, "Unknown opcode: %04X", cpu->opcode);
+        default: fprintf(stderr, "Unknown opcode: %04X\n", cpu->opcode);
       }
       break;
 
@@ -60,7 +63,7 @@ void execute_cycle(cpu_t *cpu) {
       switch(cpu->opcode & 0x00FF){
         case 0x9E: break;
         case 0xA1: break;
-        default: fprintf(stderr, "Unknown opcode: %04X", cpu->opcode);
+        default: fprintf(stderr, "Unknown opcode: %04X\n", cpu->opcode);
       }
       break;
 
@@ -75,18 +78,29 @@ void execute_cycle(cpu_t *cpu) {
         case 0x0033: break;
         case 0x0055: break;
         case 0x0065: break;
-        default: fprintf(stderr, "Unknown opcode: %04X", cpu->opcode);
+        default: fprintf(stderr, "Unknown opcode: %04X\n", cpu->opcode);
       }
       break;
 
-    default: fprintf(stderr, "Unknown opcode: %04X", cpu->opcode);
+    default: fprintf(stderr, "Unknown opcode: %04X\n", cpu->opcode);
   }
 }
 
 
 
+/***********************************************************************
+ *                              Utils   
+ ***********************************************************************/
 
+void dump_memory(cpu_t *cpu){
+  unsigned hex_per_row = 32;
 
+  int i,j ;
+  for (i = 0x000; i < 0xFFF; i += hex_per_row){   
+    for (j = i; j < (i + hex_per_row); ++j){
+      printf("%02X ", cpu->mem[j]);
+    }
+    printf("\n");
+  }
 
-
-
+}

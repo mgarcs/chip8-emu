@@ -8,7 +8,7 @@
 #define SCREEN_DEPTH 32
 
 typedef struct {
-   SDL_Surface *screen;
+   SDL_Surface *display;
    SDL_Event event;
 
    int keypress;
@@ -19,6 +19,8 @@ typedef struct {
 
 
 int init_gfx(graphics_t *graphics);
+void clear_screen(graphics_t *graphics);
+
 
 #endif
 
