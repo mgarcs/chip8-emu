@@ -141,7 +141,7 @@ INSTRUCTION(rand) {
 
 /* drys	 sprite rx,ry,s	 Draw sprite at screen location rx,ry height s */
 INSTRUCTION(sprite) {
-
+  
 }
 
 /* dry0	 xsprite rx,ry	 Draws extended sprite at screen location rx,ry */

@@ -1,9 +1,8 @@
 #include <cpu.h>
 #include <instructions.h>
 
-
-static inline uint16_t fetch_dword(uint8_t *mem, uint8_t pc) {
-  return mem[pc] << 8 | mem[pc + 1];
+static inline uint16_t fetch_dword(uint8_t *mem, uint16_t pc) {
+  return (mem[pc] << 8) | mem[pc + 1];
 }
 
 
@@ -23,6 +22,8 @@ void execute_cycle(cpu_t *cpu) {
   cpu->regs.index = cpu->opcode & 0xFFF;
   cpu->regs.pc += 2;
 
+  printf("opcode = %04x\n", cpu->opcode);
+  
   switch(cpu->opcode & 0xF000){
     case 0x0000:
       switch(cpu->opcode & 0x0FF){

@@ -56,5 +56,4 @@ void execute_cycle(cpu_t *cpu);
 
 void dump_memory(cpu_t *cpu);
 
-
 #endif

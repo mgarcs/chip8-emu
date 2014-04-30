@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <cpu.h>
 #include <gfx.h>
 
@@ -27,6 +28,7 @@ INSTRUCTION(sub);
 INSTRUCTION(shr);
 INSTRUCTION(rsb);
 INSTRUCTION(shl);
+INSTRUCTION(skne2);
 INSTRUCTION(mvi);
 INSTRUCTION(jmi);
 INSTRUCTION(rand);
@@ -44,6 +46,5 @@ INSTRUCTION(xfont);
 INSTRUCTION(bcd);
 INSTRUCTION(str);
 INSTRUCTION(ldr);
-
 
 #endif
