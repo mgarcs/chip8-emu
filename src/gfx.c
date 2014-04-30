@@ -18,3 +18,8 @@ int init_gfx(graphics_t *graphics) {
 void clear_screen(graphics_t *graphics){
     SDL_FillRect(graphics->display, NULL, SDL_MapRGB(graphics->display->format, 0, 0, 0));
 }
+
+void set_pixel(graphics_t *graphics, int x, int y) {
+  
+}
+

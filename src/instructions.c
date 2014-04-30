@@ -171,27 +171,27 @@ INSTRUCTION(key) {
 
 /* fr15	 sdelay vr	 set the delay timer to vr */
 INSTRUCTION(sdelay) {
-  
+  cpu->regs.v[(cpu->opcode & 0xF00) >> 8] = cpu->delay_timer;
 }
 
 /* fr18	 ssound vr	 set the sound timer to vr */
 INSTRUCTION(ssound) {
-  
+  cpu->regs.v[(cpu->opcode & 0xF00) >> 8] = cpu->sound_timer;
 }
 
 /* fr1e	 adi vr	 add register vr to the index register	 */
 INSTRUCTION(adi) {
-  
+  cpu->regs.index += cpu->regs.v[(cpu->opcode & 0xF00) >> 8];
 }
 
 /* fr29	 font vr	 point I to the sprite for hexadecimal character in vr */
 INSTRUCTION(font) {
-  
+  cpu->regs.index = cpu->regs.v[(cpu->opcode & 0xF00) >> 8];
 }
 
 /* fr30	 xfont vr	 point I to the sprite for hexadecimal character in vr */
 INSTRUCTION(xfont) {
-  
+  cpu->regs.index = cpu->regs.v[(cpu->opcode & 0xF00) >> 8];
 }
 
 /* fr33	 bcd vr	 store the bcd representation of register vr at location I,I+1,I+2 */
@@ -199,12 +199,18 @@ INSTRUCTION(bcd) {
   
 }
 
-/* fr55	 str v0-vr	 store registers v0-vr at location I onwards */
+/* fr55	 str v0-vr	 store registers v0-vr in memory at location I onwards */
 INSTRUCTION(str) {
-  
+  uint8_t i;
+  for (i = 0x0; i < 0xF; ++i){
+    cpu->mem[cpu->regs.index + i] = cpu->regs.v[i];
+  }
 }
 
-/* fx65	 ldr v0-vr	 load registers v0-vr from location I onwards */
+/* fx65	 ldr v0-vr	 load registers v0-vr from memory at location I onwards */
 INSTRUCTION(ldr) {
-  
+  uint8_t i;
+  for (i = 0x0; i < 0xF; ++i){
+    cpu->regs.v[i] = cpu->mem[cpu->regs.index + i];
+  }  
 }

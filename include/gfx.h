@@ -20,6 +20,7 @@ typedef struct {
 
 int init_gfx(graphics_t *graphics);
 void clear_screen(graphics_t *graphics);
+void set_pixel(graphics_t *graphics, int x, int y);
 
 
 #endif

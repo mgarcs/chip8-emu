@@ -45,7 +45,12 @@ typedef struct reg{
 typedef struct cpu{
   uint8_t mem[MEMORY_SIZE];
   uint16_t opcode;
+  
   reg_t regs;
+  
+  uint8_t delay_timer;
+  uint8_t sound_timer;
+
   graphics_t *gfx;
   uint8_t keypad;
 } cpu_t;

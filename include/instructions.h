@@ -8,7 +8,7 @@
 #include <gfx.h>
 
 #define INSTRUCTION(name) void instruction_##name(cpu_t *cpu)
-#define EXEC_INSTRUCTION(name, cpu) instruction_##name(cpu)
+#define EXEC_INSTRUCTION(cpu, name) instruction_##name(cpu)
 
 INSTRUCTION(cls);
 INSTRUCTION(rts);
