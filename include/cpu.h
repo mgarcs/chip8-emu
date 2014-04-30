@@ -6,7 +6,7 @@
 #include <string.h>
 #include <gfx.h>
 
-#define MEMORY_SIZE 0xFFF
+#define MEMORY_SIZE 4096
 
 #define STACK_START 0xEA0
 #define STACK_END 0xEFF
