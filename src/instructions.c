@@ -141,13 +141,30 @@ INSTRUCTION(rand) {
 
 /* drys	 sprite rx,ry,s	 Draw sprite at screen location rx,ry height s */
 INSTRUCTION(sprite) {
+  uint8_t height = cpu->opcode & 0xF;
+  uint8_t x = cpu->regs.v[cpu->opcode & 0xF0 >> 4];
+  uint8_t y = cpu->regs.v[cpu->opcode & 0xF00 >> 8];
+
+  cpu->regs.v[0xF] = 0;
+
+  uint8_t i, j;
+  for (j = 0; j < height; ++j){
+    for (i = 0; i < 8; ++i){
+      uint8_t pixel = cpu->mem[cpu->regs.index + j];
+      
+      if(pixel & 0x80){
+        if(is_pixel_set(cpu->gfx, x + i, y + j)) cpu->regs.v[0xF] = 1;
+      
+        set_pixel(cpu->gfx, x + i, y + j); 
+      }
+      
+      pixel <<= 1;
+    }
+  }
   
 }
 
-/* dry0	 xsprite rx,ry	 Draws extended sprite at screen location rx,ry */
-INSTRUCTION(xsprite) {
 
-}
 
 /* ek9e	 skpr k	 skip if key (register rk) pressed */
 INSTRUCTION(skpr) {
@@ -161,7 +178,7 @@ INSTRUCTION(skup) {
 
 /* fr07	 gdelay vr	 get delay timer into vr */
 INSTRUCTION(gdelay) {
-  
+  cpu->regs.v[(cpu->opcode & 0xF00) >> 8] = cpu->delay_timer;  
 }
 
 /* fr0a	 key vr	 wait for for keypress,put key in register vr */
@@ -171,7 +188,7 @@ INSTRUCTION(key) {
 
 /* fr15	 sdelay vr	 set the delay timer to vr */
 INSTRUCTION(sdelay) {
-  cpu->regs.v[(cpu->opcode & 0xF00) >> 8] = cpu->delay_timer;
+  cpu->delay_timer = cpu->regs.v[(cpu->opcode & 0xF00) >> 8];
 }
 
 /* fr18	 ssound vr	 set the sound timer to vr */

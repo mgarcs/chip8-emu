@@ -60,13 +60,7 @@ void execute_cycle(cpu_t *cpu) {
     case 0xA000: EXEC_INSTRUCTION(cpu, mvi);    break;
     case 0xB000: EXEC_INSTRUCTION(cpu, jmi);    break;
     case 0xC000: EXEC_INSTRUCTION(cpu, rand);   break;
-    case 0xD000: 
-        switch(cpu->opcode & 0x000F){
-          case 0x0000: EXEC_INSTRUCTION(cpu, sprite);  break;
-          case 0x000E: EXEC_INSTRUCTION(cpu, xsprite); break;
-          default: fprintf(stderr, "Unknown opcode: %04X\n", cpu->opcode);             
-        }
-        break;
+    case 0xD000: EXEC_INSTRUCTION(cpu, sprite); break; 
           
     case 0xE000: 
       switch(cpu->opcode & 0x00FF){
