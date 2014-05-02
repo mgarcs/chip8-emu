@@ -168,12 +168,16 @@ INSTRUCTION(sprite) {
 
 /* ek9e	 skpr k	 skip if key (register rk) pressed */
 INSTRUCTION(skpr) {
-
+  if(cpu->keypressed[(cpu->opcode & 0xF00) >> 8]){
+    cpu->regs.pc += 2;
+  }
 }
 
 /* eka1	 skup k	 skip if key (register rk) not pressed */
 INSTRUCTION(skup) {
-  
+  if(!cpu->keypressed[(cpu->opcode & 0xF00) >> 8]){
+    cpu->regs.pc += 2;
+  }
 }
 
 /* fr07	 gdelay vr	 get delay timer into vr */
@@ -183,7 +187,13 @@ INSTRUCTION(gdelay) {
 
 /* fr0a	 key vr	 wait for for keypress,put key in register vr */
 INSTRUCTION(key) {
-
+  int i;
+  for (i = 0;; i > 0xF ? 0 : i++){
+    if(cpu->keypressed[i]){
+      cpu->regs.v[(cpu->opcode & 0xF00) >> 8] = cpu->keypressed[i];
+      break;
+    }
+  }
 }
 
 /* fr15	 sdelay vr	 set the delay timer to vr */
@@ -213,7 +223,9 @@ INSTRUCTION(xfont) {
 
 /* fr33	 bcd vr	 store the bcd representation of register vr at location I,I+1,I+2 */
 INSTRUCTION(bcd) {
-  
+  cpu->mem[cpu->regs.index] = cpu->regs.v[(cpu->opcode & 0xF00) >> 8] / 100;
+  cpu->mem[cpu->regs.index + 1] = (cpu->regs.v[(cpu->opcode & 0xF00) >> 8] / 10) % 10;
+  cpu->mem[cpu->regs.index + 2] = cpu->regs.v[(cpu->opcode & 0xF00) >> 8] % 10;
 }
 
 /* fr55	 str v0-vr	 store registers v0-vr in memory at location I onwards */

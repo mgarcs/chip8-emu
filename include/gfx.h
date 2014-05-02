@@ -13,7 +13,6 @@
 typedef struct {
    SDL_Surface *display;
   
-   int keypress;
    uint8_t x;
    uint8_t y;
 } graphics_t;  

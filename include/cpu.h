@@ -52,7 +52,7 @@ typedef struct cpu{
   uint8_t sound_timer;
 
   graphics_t *gfx;
-  uint8_t keypad;
+  uint8_t keypressed[16];
 } cpu_t;
 
 
