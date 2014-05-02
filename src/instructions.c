@@ -7,14 +7,16 @@ INSTRUCTION(cls) {
 
 /* 00EE	 rts	 return from subroutine call */
 INSTRUCTION(rts) {
-   cpu->regs.pc = STACK_POP(cpu);
+    printf("[rts...] popping...  stack_pointer: %X \n", cpu->regs.sp);
+    cpu->regs.pc = STACK_POP(cpu);
+    printf("[rts] pop adrr: %X , stack_pointer: %X \n", cpu->regs.pc, cpu->regs.sp);
    
-   if(IS_STACK_SMASHED(cpu->regs.sp)) {
+    if(IS_STACK_SMASHED(cpu->regs.sp)) {
       fprintf(stderr, "[Fatal Error] Stack smashing detected.\n");
       fprintf(stderr, "========== Memory Dump ===========\n");
       dump_memory(cpu);
       exit(1);
-   }
+    }
 }
 
 /* 1xxx	 jmp xxx	 jump to address xxx */
@@ -24,7 +26,10 @@ INSTRUCTION(jmp) {
 
 /* 2xxx	 jsr xxx	 jump to subroutine at address xxx */
 INSTRUCTION(jsr) {
+  printf("[jsr...] pushing addr: %X, stack_pointer: %X \n", cpu->regs.pc, cpu->regs.sp);
   STACK_PUSH(cpu, cpu->regs.pc);
+  printf("[jsr] pushed... stack_pointer: %X \n", cpu->regs.sp);
+  
   if(IS_STACK_SMASHED(cpu->regs.sp)) {
       fprintf(stderr, "[Fatal Error] Stack smashing detected.\n");
       fprintf(stderr, "========== Memory Dump ===========\n");

@@ -10,8 +10,8 @@
 
 #define STACK_START 0xEA0
 #define STACK_END 0xEFF
-#define STACK_PUSH(cpu, val) cpu->mem[++(cpu)->regs.sp] = val
-#define STACK_POP(cpu) (cpu)->mem[(cpu)->regs.sp--]
+#define STACK_PUSH(cpu, val) cpu->mem[(cpu->regs.sp++)] = (uint8_t) val << 4; cpu->mem[(cpu->regs.sp)] = (uint8_t) val
+#define STACK_POP(cpu) (uint16_t) (cpu->mem[cpu->regs.sp--] | (cpu->mem[cpu->regs.sp] << 4))
 #define IS_STACK_SMASHED(sp) (sp < STACK_START || sp > STACK_END) ? 1 : 0
 
 
